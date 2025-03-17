@@ -1,46 +1,59 @@
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text,Image, View, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { onboarding} from '../constants'; // Import from constants folder
+import { onboarding} from '../constants'; 
+import CustomButton from '../../components/CustomButton';
 
 const Onboarding = () => {
   const swiperRef = useRef<Swiper>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isLastSlide = currentIndex === onboarding.length-1;
   
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="w-full flex-row justify-between items-center p-5">
-        <View className="flex-1">
-          <Text className="text-2xl font-JakartaBold">
-            {onboarding[currentIndex].title}
-          </Text>
-          <Text className="text-gray-600 mt-2">
-            {onboarding[currentIndex].description}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={() => router.replace('/(auth)/sign-up')}>
-          <Text className="text-black text-md font-JakartaBold ml-4">Skip</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView className="flex h-full items-center justify-between bg-white">
+      <TouchableOpacity
+        onPress={() => {
+          router.replace("/(auth)/sign-up");
+        }}
+        className="w-full flex justify-end items-end p-5"
+      >
+        <Text className="text-black text-md font-JakartaBold">Skip</Text>
+      </TouchableOpacity>
       
-      <View className="flex-1">
+     
         <Swiper 
           ref={swiperRef}
           loop={false}
-          dot={<View className="w-2 h-2 bg-gray-300 rounded-full mx-1" />}
-          activeDot={<View className="w-2 h-2 bg-black rounded-full mx-1" />}
-          paginationStyle={{ bottom: 30 }}
+          dot={ <View className="w-[32px] h-[4px] mx-1 bg-[#E2E8F0] rounded-full" />}
+          activeDot={<View className="w-[32px] h-[4px] mx-1 bg-[#0286FF] rounded-full" />}
+          
           onIndexChanged={(index) => setCurrentIndex(index)}
         >
-          {onboarding.map((_, index) => (
-            <View key={`slide-${index}`} className="flex-1 justify-center items-center">
-              {/* Empty view for swiper slides - content is displayed above */}
+          {onboarding.map((item) => (
+            <View key={item.id} className="flex items-center justify-center p-5">
+            <Image
+              source={item.image}
+              className="w-full h-[200px]"
+              resizeMode="contain"
+            />
+            <View className="flex flex-row items-center justify-center w-full mt-10">
+              <Text className="text-black text-3xl font-bold mx-10 text-center">
+                {item.title}
+              </Text>
             </View>
-          ))}
-        </Swiper>
-      </View>
-    </SafeAreaView>
+            <Text className="text-md font-JakartaSemiBold text-center text-[#858585] mx-10 mt-3">
+              {item.description}
+            </Text>
+          </View>
+        ))}
+      </Swiper>
+      <CustomButton 
+        title={isLastSlide ? "Get Started" : "Next"}
+        onPress={() => isLastSlide ? router.replace('/(auth)/sign-up') : swiperRef.current?.scrollBy(1)}
+        className="w-11/12 mt-10"
+      />
+      </SafeAreaView>
   );
 };
 
