@@ -49,7 +49,7 @@ export default function RootLayout() {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
-  <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+  <ClerkProvider publishableKey={publishableKey} >
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
