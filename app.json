@@ -33,6 +33,10 @@
       "expo-router",
       "expo-secure-store"
     ],
+    "ignoreRoutes": [
+      "**/types/**", 
+      "**/constants/**"
+    ],
     "experiments": {
       "typedRoutes": true
     },
