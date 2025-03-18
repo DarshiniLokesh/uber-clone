@@ -4,7 +4,11 @@
     "strict": true,
     "types": [
       "nativewind/types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]  // Note the asterisk (*) after the slash
+    }
   },
   "include": [
     "**/*.ts",

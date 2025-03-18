@@ -5,15 +5,79 @@ import { useState } from 'react';
 import CustomButton from '../../components/CustomButton';
 import { Link } from 'expo-router';
 import OAuth from '../../components/OAuth';
+import { useSignUp } from '@clerk/clerk-expo'
 
 const SignUp = () => {
+  const { isLoaded, signUp, setActive } = useSignUp()
+
   const [form ,  setForm] = useState( {
     name:"",
     email:"",
     password:"",
-  })
+  });
 
-  const onSignUpPress = async() => {};
+  const [verification, setVerification] = useState({
+    state: 'default',
+    error: '',
+    code: ''
+  });
+
+// Handle submission of sign-up form
+    const onSignUpPress = async () => {
+      if (!isLoaded) return
+  
+      // Start sign-up process using email and password provided
+      try {
+        await signUp.create({
+          emailAddress: form.email,
+          password: form.password,
+        })
+  
+        // Send user an email with verification code
+        await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+  
+        // Set 'pendingVerification' to true to display second form
+        // and capture OTP code
+        setVerification({
+          ...verification,
+
+          state: 'pending'
+        })
+      } catch (err) {
+        console.error(JSON.stringify(err, null, 2))
+      }
+    }
+  
+    // Handle submission of verification form
+    const onVerifyPress = async () => {
+      if (!isLoaded) return
+  
+      try {
+        // Use the code the user provided to attempt verification
+        const completeSignUp = await signUp.attemptEmailAddressVerification({
+          code: verification.code,
+        })
+  
+        
+        if (completeSignUp.status === 'complete') {
+          //TODO; Create a database user!
+          await setActive({ session: completeSignUp.createdSessionId })
+          setVerification({...verification, state:'success'})
+        } else {
+          
+          setVerification({...verification,error:'Verification Failed', state:'failed'})
+        }
+      } catch (err:any) {
+        
+        setVerification({
+          ...verification,
+          error: err.errors[0].longMessage,
+          state: "failed",
+        })
+      }
+    }
+  
+   
   
   
   return (
