@@ -1,5 +1,5 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, router } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { Alert, Image, ScrollView, Text, View } from "react-native";
 
@@ -10,6 +10,7 @@ import { icons, images } from "../constants/index";
 
 const SignIn = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter()
 
   const [form, setForm] = useState({
     email: "",
@@ -29,7 +30,7 @@ const SignIn = () => {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/(root)/(tabs)/home");
       } else {
-        // See https://clerk.com/docs/custom-flows/error-handling for more info on error handling
+        
         console.log(JSON.stringify(signInAttempt, null, 2));
         Alert.alert("Error", "Log in failed. Please try again.");
       }
@@ -37,7 +38,7 @@ const SignIn = () => {
       console.log(JSON.stringify(err, null, 2));
       Alert.alert("Error", err.errors[0].longMessage);
     }
-  }, [isLoaded, form]);
+  }, [isLoaded, form.email , form.password]); 
 
   return (
     <ScrollView className="flex-1 bg-white">
