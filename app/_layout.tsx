@@ -4,13 +4,13 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
-import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo'
+import { ClerkProvider } from '@clerk/clerk-expo'
 import { tokenCache } from '@/lib/auth';
 import { View, Text } from 'react-native';
 
 
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+
 
 
 SplashScreen.preventAutoHideAsync();
@@ -25,7 +25,7 @@ export default function RootLayout() {
     "Jakarta-Regular": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
     "Jakarta-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
   });
-
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
   // Check publishable key
   if (!publishableKey) {
     throw new Error(
@@ -48,8 +48,8 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-  <ClerkProvider publishableKey={publishableKey} >
+    
+  <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache} >
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -57,6 +57,6 @@ export default function RootLayout() {
       <Stack.Screen name="+not-found" />
     </Stack>
   </ClerkProvider>
-</View>
+
   );
 }
