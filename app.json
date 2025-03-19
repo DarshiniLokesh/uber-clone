@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "extra": {
-      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_b3JpZW50ZWQtbWVlcmthdC04Mi5jbGVyay5hY2NvdW50cy5kZXYk"
+      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_b3JpZW50ZWQtbWVlcmthdC04Mi5jbGVyay5hY2NvdW50cy5kZXYk",
+      "origin": "https://uber.com/"
     },
     "ios": {
       "supportsTablet": true
@@ -26,7 +27,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [

@@ -8,6 +8,7 @@ import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "../constants/";
+import { fetchAPI } from "@/lib/fetch";
 
 
 const SignUp = () => {
@@ -51,7 +52,14 @@ const SignUp = () => {
         code: verification.code,
       });
       if (completeSignUp.status === "complete") {
-        
+        await fetchAPI("/(api)/user", {
+          method: "POST",
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            clerkId: completeSignUp.createdUserId,
+          }),
+        });
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({
           ...verification,
@@ -74,6 +82,11 @@ const SignUp = () => {
       });
     }
   };
+
+  const redirectToHome = () => {
+    router.replace("/(root)/(tabs)/home");
+  };
+
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
@@ -121,6 +134,13 @@ const SignUp = () => {
             Already have an account?{" "}
             <Text className="text-primary-500">Log In</Text>
           </Link>
+
+          <CustomButton
+            title="Go to Home Page"
+            onPress={redirectToHome}
+            className="mt-8 bg-blue-500"
+          />
+
         </View>
         <ReactNativeModal
           isVisible={verification.state === "pending"}
@@ -176,7 +196,7 @@ const SignUp = () => {
             </Text>
             <CustomButton
               title="Browse Home"
-              onPress={() => router.push(`/(root)/(tabs)/home`)}
+              onPress={() => router.replace("/(root)/(tabs)/home")}
               className="mt-5"
             />
           </View>
