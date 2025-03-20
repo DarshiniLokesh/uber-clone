@@ -13,8 +13,9 @@
       "backgroundColor": "#ffffff"
     },
     "extra": {
-      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_b3JpZW50ZWQtbWVlcmthdC04Mi5jbGVyay5hY2NvdW50cy5kZXYk",
-      "origin": "https://uber.com/"
+      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY":"pk_test_aW50ZWdyYWwtYW50LTc5LmNsZXJrLmFjY291bnRzLmRldiQ",
+      "origin": "https://uber.com/",
+      "DATABASE_URL":  "postgresql://neondb_owner:npg_JTfaN7dWeMF9@ep-shy-credit-a5k114s1-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require"
     },
     "ios": {
       "supportsTablet": true
