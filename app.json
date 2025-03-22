@@ -10,12 +10,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "extra": {
-      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY":"pk_test_aW50ZWdyYWwtYW50LTc5LmNsZXJrLmFjY291bnRzLmRldiQ",
-      "origin": "https://uber.com/",
-      "DATABASE_URL":  "postgresql://neondb_owner:npg_JTfaN7dWeMF9@ep-shy-credit-a5k114s1-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require"
+      "backgroundColor": "#2F80ED"
     },
     "ios": {
       "supportsTablet": true
@@ -32,16 +27,15 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
-      "expo-secure-store"
-    ],
-    "ignoreRoutes": [
-      "**/types/**", 
-      "**/constants/**"
+      [
+        "expo-router",
+        {
+          "origin": "https://uber.com/"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "newArchEnabled": true
+    }
   }
 }

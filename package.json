@@ -18,6 +18,7 @@
     "@clerk/clerk-expo": "^0.19.30",
     "@expo/metro-runtime": "~4.0.1",
     "@expo/vector-icons": "^14.0.2",
+    "@neondatabase/serverless": "^0.10.4",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
     "dotenv": "^16.4.7",
@@ -63,4 +64,8 @@
     "typescript": "^5.3.3"
   },
   "private": true
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6ce1a73 (fix: sign-up)
