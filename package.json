@@ -64,8 +64,4 @@
     "typescript": "^5.3.3"
   },
   "private": true
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6ce1a73 (fix: sign-up)
