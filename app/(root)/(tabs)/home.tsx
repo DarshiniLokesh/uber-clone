@@ -1,4 +1,5 @@
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo'
+import {  useUser } from '@clerk/clerk-expo'
+import * as Location from "expo-location";
 import { Text, View, SafeAreaView, Image, ActivityIndicator, TouchableOpacity,  } from 'react-native'
 import { FlatList } from 'react-native'
 import RideCard from '@/components/RideCard'
@@ -6,6 +7,8 @@ import { images } from '@/constants'
 import { icons } from '@/app/constants'
 import GoogleTextInput from '@/components/GoogleTextInput'
 import Map from '../../../components/Maps'
+import { useLocationStore } from '@/store'
+import { useState, useEffect } from 'react'
 
 const recentRides = [
   {
@@ -106,10 +109,36 @@ const recentRides = [
   }
 ]
 export default function Page() {
+  const {setUserLocation, setDestinationLocation} = useLocationStore();
   const { user } = useUser()
   const loading = true;
+
+  const[hasPermission,setHasPermission] = useState(false)
   const handleSignOut =  () => {}
   const handleDestinationPress = () => {}
+
+  useEffect(()=>{
+    const requestLocation = async() => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== 'granted' ){
+        setHasPermission(false)
+        return;
+      }
+    };
+
+    let location = await Location.getCurrentPositionAsync();
+
+    const address = await Location.reverseGeocodeAsync({
+      latitude: location.coords?.latitude!,
+      longitude: location.coords?.longitude!,
+      address: `${address[0].name}, ${address[0].region}`
+    });
+
+
+
+    requestLocation();
+  },[])
 
   return (
     <SafeAreaView className='bg-general-500'>
@@ -157,6 +186,7 @@ export default function Page() {
               containerStyle="bg-white shadow-md shadow-neutral-300"
               handlePress={handleDestinationPress}
             />
+
           <>
           <Text className="text-xl font-JakartaBold mt-5 mb-3">
             Your Current Location
