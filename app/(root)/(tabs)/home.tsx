@@ -1,18 +1,17 @@
-import {  useUser } from '@clerk/clerk-expo'
+import { useUser } from "@clerk/clerk-expo";
 import * as Location from "expo-location";
-import { Text, View, SafeAreaView, Image, ActivityIndicator, TouchableOpacity,  } from 'react-native'
-import { FlatList } from 'react-native'
-import RideCard from '@/components/RideCard'
-import { images } from '@/constants'
-import { icons } from '@/app/constants'
-import GoogleTextInput from '@/components/GoogleTextInput'
-import Map from '../../../components/Maps'
-import { useLocationStore } from '@/store'
-import { useState, useEffect } from 'react'
+import { Text, View, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, FlatList } from "react-native";
+import RideCard from "@/components/RideCard";
+import { images } from "@/constants";
+import { icons } from "@/app/constants";
+import GoogleTextInput from "@/components/GoogleTextInput";
+import Map from "../../../components/Maps";
+import { useLocationStore } from "@/store";
+import { useState, useEffect } from "react";
 
 const recentRides = [
   {
-      "ride_id": "1",
+    "ride_id": "1",
       "origin_address": "Kathmandu, Nepal",
       "destination_address": "Pokhara, Nepal",
       "origin_latitude": "27.717245",
@@ -105,62 +104,60 @@ const recentRides = [
           "car_image_url": "https://ucarecdn.com/289764fb-55b6-4427-b1d1-f655987b4a14/-/preview/930x932/",
           "car_seats": 4,
           "rating": "4.70"
-      }
-  }
-]
+    },
+  },
+];
+
 export default function Page() {
-  const {setUserLocation, setDestinationLocation} = useLocationStore();
-  const { user } = useUser()
-  const loading = true;
+  const { setUserLocation, setDestinationLocation } = useLocationStore();
+  const { user } = useUser();
+  const [loading, setLoading] = useState(true);
+  const [hasPermission, setHasPermission] = useState(false);
 
-  const[hasPermission,setHasPermission] = useState(false)
-  const handleSignOut =  () => {}
-  const handleDestinationPress = () => {}
+  const handleSignOut = () => {};
+  const handleDestinationPress = () => {};
 
-  useEffect(()=>{
-    const requestLocation = async() => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted' ){
-        setHasPermission(false)
+  useEffect(() => {
+    const requestLocation = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setHasPermission(false);
         return;
+      }
+
+      setHasPermission(true);
+
+      const location = await Location.getCurrentPositionAsync({});
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      if (address.length > 0) {
+        setUserLocation({
+          latitude: 37.78825,
+          longitude: -122.4324,
+          address: `${address[0].name}, ${address[0].region}`,
+        });
       }
     };
 
-    let location = await Location.getCurrentPositionAsync();
-
-    const address = await Location.reverseGeocodeAsync({
-      latitude: location.coords?.latitude!,
-      longitude: location.coords?.longitude!,
-      address: `${address[0].name}, ${address[0].region}`
-    });
-
-
-
     requestLocation();
-  },[])
+  }, []);
 
   return (
-    <SafeAreaView className='bg-general-500'>
-      
+    <SafeAreaView className="bg-general-500">
       <FlatList
-      data = {recentRides?.slice(0,5)}
-      renderItem={({item}) => <RideCard ride={item}/>}
-      className="px-5"
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{
-        paddingBottom:100,
-      }}
-      ListEmptyComponent={() => (
+        data={recentRides?.slice(0, 5)}
+        renderItem={({ item }) => <RideCard ride={item} />}
+        className="px-5"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 100 }}
+        ListEmptyComponent={() => (
           <View className="flex flex-col items-center justify-center">
             {!loading ? (
               <>
-                <Image
-                  source={images.noResult}
-                  className="w-40 h-40"
-                  alt="No recent rides found"
-                  resizeMode="contain"
-                />
+                <Image source={images.noResult} className="w-40 h-40" alt="No recent rides found" resizeMode="contain" />
                 <Text className="text-sm">No recent rides found</Text>
               </>
             ) : (
@@ -168,16 +165,13 @@ export default function Page() {
             )}
           </View>
         )}
-      ListHeaderComponent={() => (
-        <>
-        <View className="flex flex-row items-center justify-between my-5">
+        ListHeaderComponent={() => (
+          <>
+            <View className="flex flex-row items-center justify-between my-5">
               <Text className="text-xl font-JakartaExtraBold">
-                Welcome {user?.firstName || user?.emailAddresses[0].emailAddress.split("@")[0]}{""}👋
+                Welcome {user?.firstName || user?.emailAddresses[0]?.emailAddress.split("@")[0]} 👋
               </Text>
-              <TouchableOpacity
-                onPress={handleSignOut}
-                className="justify-center items-center w-10 h-10 rounded-full bg-white"
-              >
+              <TouchableOpacity onPress={handleSignOut} className="justify-center items-center w-10 h-10 rounded-full bg-white">
                 <Image source={icons.out} className="w-4 h-4" />
               </TouchableOpacity>
             </View>
@@ -186,22 +180,14 @@ export default function Page() {
               containerStyle="bg-white shadow-md shadow-neutral-300"
               handlePress={handleDestinationPress}
             />
-
-          <>
-          <Text className="text-xl font-JakartaBold mt-5 mb-3">
-            Your Current Location
-          </Text>
-          <View className="flex flex-row items-center bg-transparent h-[300px]">
-            <Map/>
-          </View>
+            <Text className="text-xl font-JakartaBold mt-5 mb-3">Your Current Location</Text>
+            <View className="flex flex-row items-center bg-transparent h-[300px]">
+              <Map />
+            </View>
+            <Text className="text-xl font-JakartaBold mt-5 mb-3">Recent Rides</Text>
           </>
-          <Text className="text-xl font-JakartaBold mt-5 mb-3">
-            Recent Rides
-          </Text>
-        </>
-      )}
+        )}
       />
-      
-</SafeAreaView>
-  )
+    </SafeAreaView>
+  );
 }
