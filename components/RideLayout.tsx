@@ -45,6 +45,7 @@ import BottomSheet, {
   
           <BottomSheet
             ref={bottomSheetRef}
+            keyboardBehavior="extend"
             snapPoints={snapPoints || ["40%", "85%"]}
             index={0}
           >
@@ -58,14 +59,14 @@ import BottomSheet, {
                 {children}
               </BottomSheetView>
             ) : (
-              <BottomSheetScrollView
+              <BottomSheetView
                 style={{
                   flex: 1,
                   padding: 20,
                 }}
               >
                 {children}
-              </BottomSheetScrollView>
+              </BottomSheetView>
             )}
           </BottomSheet>
         </View>
