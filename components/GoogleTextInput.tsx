@@ -1,6 +1,12 @@
-import React from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
-import { GoogleInputProps } from "@/app/types/type";
+import { View, Image } from "react-native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+
+import { icons } from "@/constants";
+import { GoogleInputProps } from "../app/types/type"
+import 'react-native-get-random-values';
+
+
+const googlePlacesApiKey = process.env.EXPO_PUBLIC_PLACES_API_KEY;
 
 const GoogleTextInput = ({
   icon,
@@ -10,21 +16,70 @@ const GoogleTextInput = ({
   handlePress,
 }: GoogleInputProps) => {
   return (
-    <TouchableOpacity 
-   
-      className={`flex flex-row items-center justify-between px-4 py-3 rounded-xl z-50 mb-5 ${containerStyle}`}
+    <View
+      className={`flex flex-row items-center justify-center relative z-50 rounded-xl ${containerStyle}`}
     >
-      {icon && (
-        <Image 
-          source={typeof icon === 'string' ? { uri: icon } : icon} 
-          className="w-5 h-5 mr-3" 
-          resizeMode="contain" 
-        />
-      )}
-      <Text className="flex-1 text-neutral-500">
-        Search
-      </Text>
-    </TouchableOpacity>
+      <GooglePlacesAutocomplete
+        fetchDetails={true}
+        placeholder="Search"
+        debounce={200}
+        styles={{
+          textInputContainer: {
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 20,
+            marginHorizontal: 20,
+            position: "relative",
+            shadowColor: "#d4d4d4",
+          },
+          textInput: {
+            backgroundColor: textInputBackgroundColor
+              ? textInputBackgroundColor
+              : "white",
+            fontSize: 16,
+            fontWeight: "600",
+            marginTop: 5,
+            width: "100%",
+            borderRadius: 200,
+          },
+          listView: {
+            backgroundColor: textInputBackgroundColor
+              ? textInputBackgroundColor
+              : "white",
+            position: "relative",
+            top: 0,
+            width: "100%",
+            borderRadius: 10,
+            shadowColor: "#d4d4d4",
+            zIndex: 99,
+          },
+        }}
+        onPress={(data, details = null) => {
+          handlePress({
+            latitude: details?.geometry.location.lat!,
+            longitude: details?.geometry.location.lng!,
+            address: data.description,
+          });
+        }}
+        query={{
+          key: googlePlacesApiKey,
+          language: "en",
+        }}
+        renderLeftButton={() => (
+          <View className="justify-center items-center w-6 h-6">
+            <Image
+              source={icon ? icon : icons.search}
+              className="w-6 h-6"
+              resizeMode="contain"
+            />
+          </View>
+        )}
+        textInputProps={{
+          placeholderTextColor: "gray",
+          placeholder: initialLocation ?? "Where do you want to go?",
+        }}
+      />
+    </View>
   );
 };
 
