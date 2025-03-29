@@ -62,7 +62,7 @@ const GoogleTextInput = ({
           });
         }}
         query={{
-          key: googlePlacesApiKey,
+          key: "AIzaSyDTkaQKuplcuf482BdgXZHtc6ruJGr5o7w",
           language: "en",
         }}
         renderLeftButton={() => (
