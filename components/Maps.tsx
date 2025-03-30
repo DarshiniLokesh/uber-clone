@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { MarkerData, } from "@/app/types/type";
 import { icons } from "@/constants";
 
-const drivers = [[
+const drivers = [
     {
         "id": "1",
         "first_name": "James",
@@ -43,7 +43,7 @@ const drivers = [[
         "car_seats": 4,
         "rating": "4.90"
     }
-]]
+];
 
 const Map = () => {
 
@@ -61,6 +61,8 @@ const Map = () => {
     });
 
     useEffect(() => {
+       setDrivers(drivers);
+
         if (Array.isArray(drivers)) {
             if (!userLatitude || !userLongitude) return;
     

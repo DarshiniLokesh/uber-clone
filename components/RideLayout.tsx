@@ -59,14 +59,14 @@ import BottomSheet, {
                 {children}
               </BottomSheetView>
             ) : (
-              <BottomSheetView
+              <BottomSheetScrollView
                 style={{
                   flex: 1,
                   padding: 20,
                 }}
               >
                 {children}
-              </BottomSheetView>
+              </BottomSheetScrollView>
             )}
           </BottomSheet>
         </View>
