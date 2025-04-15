@@ -7,7 +7,7 @@ import BottomSheet, {
   import { Image, Text, TouchableOpacity, View } from "react-native";
   import { GestureHandlerRootView } from "react-native-gesture-handler";
   
-  import Map from "../components/Maps";
+  import Map from "./Map";
   import { icons } from "@/constants";
   
   const RideLayout = ({

@@ -5,7 +5,7 @@ import RideCard from "@/components/RideCard";
 import { images } from "@/constants";
 import { icons } from "@/app/constants";
 import GoogleTextInput from "@/components/GoogleTextInput";
-import Map from "../../../components/Maps";
+import Map from "../../../components/Map";
 import { useLocationStore } from "@/store";
 import { useState, useEffect } from "react";
 import {router} from "expo-router";
