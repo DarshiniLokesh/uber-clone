@@ -47,6 +47,7 @@ export default function Layout() {
           alignItems: "center",
           justifyContent: "space-between",
         },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
