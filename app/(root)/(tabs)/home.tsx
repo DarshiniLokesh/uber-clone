@@ -10,6 +10,7 @@ import { useLocationStore } from "@/store";
 import { useState, useEffect } from "react";
 import {router} from "expo-router";
 import { useFetch } from "@/lib/fetch";
+import React from "react";
 
 
 
@@ -31,38 +32,42 @@ export default function Page() {
     router.push("/(root)/find-ride");
   };
 
-  useEffect(() => {
-    const requestLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setHasPermission(false);
-        return;
-      }
-
-      setHasPermission(true);
-
+  useEffect(() => {     
+    const requestLocation = async () => {       
+      const { status } = await Location.requestForegroundPermissionsAsync();       
+      if (status !== "granted") {         
+        setHasPermission(false);         
+        return;       
+      }        
+      
+      setHasPermission(true);        
+      
       const location = await Location.getCurrentPositionAsync({});
-      const address = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      if (address.length > 0) {
-        setUserLocation({
-          latitude: 37.78825,
-          longitude: -122.4324,
-          address: `${address[0].name}, ${address[0].region}`,
+      
+      const address = await Location.reverseGeocodeAsync({         
+        latitude: location.coords.latitude,         
+        longitude: location.coords.longitude,       
+      });        
+      
+      if (address.length > 0) {         
+        setUserLocation({           
+          latitude: location.coords.latitude,           
+          longitude: location.coords.longitude,           
+          address: `${address[0].name}, ${address[0].region}`,         
         });
-      }
-    };
-
-    requestLocation();
+        
+        // Consider fetching drivers for this area or using mock data if no drivers are available
+      }     
+    };      
+    
+    requestLocation();   
   }, []);
+  const rides = Array.isArray(recentRides) ? recentRides : [];
 
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList
-        data={recentRides?.slice(0, 5)}
+        data={rides.length > 0 ? rides.slice(0, 5) : []}
         renderItem={({ item }) => <RideCard ride={item} />}
         className="px-5"
         keyboardShouldPersistTaps="handled"
