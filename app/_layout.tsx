@@ -7,10 +7,11 @@ import '../global.css';
 import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo'
 import { tokenCache } from '@/lib/auth';
 import { View, Text } from 'react-native';
+import { LogBox } from 'react-native';
 
 
 
-
+LogBox.ignoreLogs(['Clerk:']);
 
 SplashScreen.preventAutoHideAsync();
 
@@ -56,7 +57,7 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(root)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
+      
     </Stack>
     </ClerkLoaded>
   </ClerkProvider>
